@@ -1,0 +1,109 @@
+* npx create-react-app amazon-clone
+* goto google firebase and create new project amazon-clone
+* cogicon-> project settings-> scroll down->click on automatic radio
+*   const firebaseConfig = {
+    apiKey: "AIzaSyBuYy1UXy5Mw0644G7tzSa-AF6Dw4Qtw_4",
+    authDomain: "clone-2d8c1.firebaseapp.com",
+    databaseURL: "https://clone-2d8c1.firebaseio.com",
+    projectId: "clone-2d8c1",
+    storageBucket: "clone-2d8c1.appspot.com",
+    messagingSenderId: "313010323689",
+    appId: "1:313010323689:web:e1609f3a08181f9e6ef078",
+    measurementId: "G-K0DGW5F1X6"
+    };
+* npm install react-router-dom
+https://youtu.be/1_IYL9ZMR_Y?t=2531
+
+* Bare minimum
+  This is app.js the entry point
+    import React from "react";
+    // import logo from "./logo.svg";
+    import "./App.css";
+    import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+    function App() {
+    return (
+        <Router>
+        <div className="app">
+            <Switch>
+            <Route path="/checkout">
+                <h1>Checkout</h1>
+            </Route>
+            <Route path="/login">
+                <h1>Login</h1>
+            </Route>
+            <Route path="/:x/register">
+                <h1>Hey</h1>
+            </Route>
+            <Route path="/">
+                <h1>Homepage</h1>
+            </Route>
+            </Switch>
+        </div>
+        </Router>
+    );
+    }
+
+    export default App;
+
+* Create Header.js
+* Go inside and press rfce (snippet) to create a skeleton
+https://youtu.be/1_IYL9ZMR_Y?t=3445
+* Create Header.css
+* we can wrap an entire component within link from react-router-dom
+    <Link to="/login">
+        <img
+          className="header__logo"
+          src={require("./amazonlogo.png")}
+          alt=""
+          width="100"
+          height="100"
+        />
+      </Link>
+* goto material ui
+  npm install @material-ui/core
+  npm install @material-ui/icons
+https://youtu.be/1_IYL9ZMR_Y?t=4401
+https://youtu.be/1_IYL9ZMR_Y?t=5944
+* Create Home.js inside the src folder and Home.css for its css definitions
+https://youtu.be/1_IYL9ZMR_Y?t=7813
+https://youtu.be/1_IYL9ZMR_Y?t=9408
+* React Context API (for the data layer) (something like redux where the data is in a common pool from where components read and update)
+* Create StateProvider.js
+  https://youtu.be/1_IYL9ZMR_Y?t=11233
+  https://youtu.be/1_IYL9ZMR_Y?t=13569
+  https://youtu.be/1_IYL9ZMR_Y?t=14484
+* npm i react-currency-format
+https://youtu.be/1_IYL9ZMR_Y?t=16287
+
+* goto firebase -> the project you have created -> cogwheel-> project settings-> scroll down
+  -> click on the config radio and paste the contents to your project at firebase.js
+* install firebase... npm i firebase
+https://youtu.be/iRwE2YTZsjQ?t=1082
+* go to firebase your project click authentication on left, select sign in method tab, then enable whatever
+https://youtu.be/iRwE2YTZsjQ?t=2863
+
+*How to deploy
+in cmd, firebase login
+firebase init
+type build when it asks where to deploy
+(in case you make any mistake, delete the firebaserc and firebase json files and do the whole process again)
+
+npm run build
+firebase deploy
+!!!Thats it
+
+If you want to make changes, edit index.html inside build and firebase deploy again
+what is firebase cli?
+how do I take down my website?
+
+deployed at
+https://clone-2d8c1.web.app
+project console
+https://console.firebase.google.com/project/clone-2d8c1/overview
+
+
+Next to do app in firebase and react
+https://www.youtube.com/watch?v=VqgTr-nd7Cg
+or tik tok
+https://www.youtube.com/watch?v=GePLvNgWROg
