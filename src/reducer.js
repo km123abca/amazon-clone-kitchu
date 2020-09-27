@@ -5,20 +5,36 @@ export const initialState = {
 export const getBasketTotal = (basket) => {
   return basket?.reduce((amount, item) => (amount += item.price), 0);
 };
+const getLocalData = (state) => {
+  let localData = [];
+  if (state.user) {
+    let localDataString = localStorage.getItem(state.user);
+    if (localDataString) localData = JSON.parse(localDataString);
+  } else {
+    let localDataString = localStorage.getItem("guest");
+    if (localDataString) localData = JSON.parse(localDataString);
+  }
+  return localData;
+};
 function reducer(state, action) {
   console.log(action);
   switch (action.type) {
-    case "GET_LOCAL_DATA":
-      if (state.user) {
-        let localData = localStorage.getItem(state.user);
-        if (localData) localData = JSON.parse(localData);
-        else localData = [];
-        return {
-          ...state,
-          basket: localData,
-        };
-      }
-      return { ...state };
+    // case "GET_LOCAL_DATA":
+    //   if (state.user) {
+    //     let localData = localStorage.getItem(state.user);
+    //     if (localData) localData = JSON.parse(localData);
+    //     else localData = [];
+    //     return {
+    //       ...state,
+    //       basket: localData,
+    //     };
+    //   }
+    //   return { ...state };
+    case "SET_BASKET_ON_RELOAD":
+      return {
+        ...state,
+        basket: getLocalData(state),
+      };
     case "SET_USER":
       return {
         ...state,
@@ -28,6 +44,11 @@ function reducer(state, action) {
       if (state.user) {
         localStorage.setItem(
           state.user,
+          JSON.stringify([...state.basket, action.item])
+        );
+      } else {
+        localStorage.setItem(
+          "guest",
           JSON.stringify([...state.basket, action.item])
         );
       }
@@ -45,6 +66,8 @@ function reducer(state, action) {
         );
       if (state.user) {
         localStorage.setItem(state.user, JSON.stringify(newBasket));
+      } else {
+        localStorage.setItem("guest", JSON.stringify(newBasket));
       }
       return { ...state, basket: newBasket };
     default:

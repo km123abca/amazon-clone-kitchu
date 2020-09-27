@@ -12,12 +12,12 @@ import { auth } from "./firebase";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
-  const [{ user }, dispatch] = useStateValue();
-  useEffect(() => {
-    dispatch({
-      type: "GET_LOCAL_DATA",
-    });
-  });
+  const [{ user, basket }, dispatch] = useStateValue();
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "GET_LOCAL_DATA",
+  //   });
+  // }, []);
   useEffect(() => {
     const unsuscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -26,15 +26,17 @@ function App() {
           type: "SET_USER",
           user: authUser,
         });
+        dispatch({ type: "SET_BASKET_ON_RELOAD" });
       } else {
         //user is logged out
         dispatch({
           type: "SET_USER",
           user: null,
         });
+        dispatch({ type: "SET_BASKET_ON_RELOAD" });
       }
     });
-    console.log(user);
+
     return () => {
       //Clean up operations that take place on dismount
       unsuscribe();
