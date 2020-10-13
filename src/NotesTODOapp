@@ -1,0 +1,13 @@
+* we are using the same index.js as the amazon-clone
+* We will change the app.js
+* https://youtu.be/VqgTr-nd7Cg?t=3728
+* goto https://material-ui.com/components/buttons/
+* npm install @material-ui/core
+  npm install @material-ui/icons
+import { Button } from "@material-ui/core";
+and use the snippet at that page for your button
+    https://youtu.be/VqgTr-nd7Cg?t=5247
+    https://youtu.be/VqgTr-nd7Cg?t=7112
+* in package.json
+  "deploy":npm run build && firebase deploy
+    https://youtu.be/VqgTr-nd7Cg?t=8875

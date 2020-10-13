@@ -1,0 +1,15 @@
+.todo__list {
+  text-align: center;
+}
+Todo__modalcontainer {
+  display: flex;
+  justify-content: space-evenly;
+  border: 2px solid red;
+}
+Todo__updateform {
+  display: flex;
+  border: 2px solid red;
+}
+Todo__inputfield {
+  flex-grow: 1;
+}

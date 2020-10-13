@@ -1,0 +1,43 @@
+.calender {
+  margin: auto;
+  margin-top: 30px;
+}
+@media (min-width: 640px) {
+  .calender {
+    max-width: 50%;
+  }
+}
+.calender__year {
+  display: flex;
+  border: 1px solid black;
+  justify-content: space-around;
+}
+.calender__month {
+  border-top: none;
+}
+.calender__button {
+  cursor: pointer;
+}
+.calender__yearmonth {
+  width: 40%;
+  text-align: center;
+  font-weight: bold;
+}
+.calender__daynames {
+  display: flex;
+  justify-content: space-evenly;
+}
+.calender__dayname {
+  width: 14%;
+  text-align: center;
+}
+.calender__daybuttonRow {
+  display: flex;
+  justify-content: space-evenly;
+}
+.calender__daybutton {
+  width: 14%;
+  text-align: center;
+  height: 60px;
+  font-weight: bold;
+}

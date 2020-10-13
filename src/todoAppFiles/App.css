@@ -1,0 +1,12 @@
+.app__contents {
+  /* border: 2px solid black; */
+  width: 100%;
+  text-align: center;
+}
+.app__form {
+  display: flex;
+  justify-content: space-evenly;
+}
+.App__linktoother {
+  text-decoration: none;
+}

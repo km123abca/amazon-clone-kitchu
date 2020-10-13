@@ -8,7 +8,7 @@ export const getBasketTotal = (basket) => {
 const getLocalData = (state) => {
   let localData = [];
   if (state.user) {
-    let localDataString = localStorage.getItem(state.user);
+    let localDataString = localStorage.getItem(state.user.email);
     if (localDataString) localData = JSON.parse(localDataString);
   } else {
     let localDataString = localStorage.getItem("guest");
@@ -43,7 +43,7 @@ function reducer(state, action) {
     case "ADD_TO_BASKET":
       if (state.user) {
         localStorage.setItem(
-          state.user,
+          state.user.email,
           JSON.stringify([...state.basket, action.item])
         );
       } else {
@@ -65,7 +65,7 @@ function reducer(state, action) {
           `The provided id, ${action.id} does not belong to any product in the basket`
         );
       if (state.user) {
-        localStorage.setItem(state.user, JSON.stringify(newBasket));
+        localStorage.setItem(state.user.email, JSON.stringify(newBasket));
       } else {
         localStorage.setItem("guest", JSON.stringify(newBasket));
       }
