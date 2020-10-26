@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Calender.css";
 import db from "./firebase";
+import firebase from "firebase";
 import SimpleModal from "./SimpleModal";
 
 function Calender() {
@@ -11,16 +12,43 @@ function Calender() {
   const [numdays, setNumdays] = useState(31);
   const [month, setMonth] = useState(9);
   const [year, setYear] = useState(2020);
-  const [entries, setEntries] = useState([
-    { date: "9-10-2020", entry: "good stuff" },
-  ]);
+  const [dateToModal, setDateToModal] = useState("");
+  const [entries, setEntries] = useState([]);
   const [modalBodyList, setModalBodyList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const storeToDB = (date, entry) => {
+    //todo
+    console.log(`${date}:${entry}`);
+    db.collection("calender").add({
+      date: date,
+      entry: entry,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  };
+  useEffect(() => {
+    db.collection("calender")
+      .orderBy("timestamp", "asc")
+      .onSnapshot((snapshot) => {
+        setEntries(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            date: doc.data().date,
+            entry: doc.data().entry,
+          }))
+        );
+      });
+  }, []);
   const openModal = (e) => {
+    console.log("modal opened");
     if (!e.target.innerHTML.match(/^[0-9]+/g)) return false;
     let day = e.target.innerHTML.match(/^[0-9]+/g)[0];
     let date = day + "-" + (month + 1) + "-" + year;
-    modalBodyList = entries.filter((x) => x.date == date).map((x) => x.entry);
+    setModalBodyList(
+      entries
+        .filter((x) => x.date == date)
+        .map((x) => ({ entry: x.entry, id: x.id }))
+    );
+    setDateToModal(date);
     setModalOpen(true);
   };
   const assignNumberSub = () => {
@@ -45,53 +73,107 @@ function Calender() {
   const assignNumber = () => {
     let num = assignNumberSub();
     let date = num + "-" + (month + 1) + "-" + year;
-    if (entries.filter((x) => x.date == date).length == 0) return num;
-    else return num + " *";
+    let dnow = new Date(),
+      a_str = "";
+    if (
+      num == dnow.getDate() &&
+      month == dnow.getMonth() &&
+      year == dnow.getFullYear()
+    )
+      a_str = " 🏈";
+    if (entries.filter((x) => x.date == date).length == 0) return num + a_str;
+    else return num + a_str + " *";
   };
   const findLastDay = () => {
     setLastday(firstday + numdays - 1);
   };
   const incrementYear = () => {
     setYear(year + 1);
+    updateMonth(year + 1);
   };
   const decrementYear = () => {
     setYear(year - 1);
+    updateMonth(year - 1);
+  };
+  const updateMonth = (year) => {
+    let dt = new Date(year + "-" + ((month + 1) % 12) + "-01");
+    dt = "" + dt;
+    let daystr = dt.substr(0, 3);
+    setFirstday(days.indexOf(daystr));
+    k = 0;
+    setNumdays(months[month % 12].numdays);
+    if (year % 4 == 0 && months[month % 12].numdays == 28) setNumdays(29);
   };
   const incrementMonth = () => {
-    setFirstday((firstday + numdays) % 7);
-    k = 0;
-
-    if (month + 1 > 11) incrementYear();
     setMonth((month + 1) % 12);
+    //********* */
+    let dt = new Date(year + "-" + ((month + 2) % 12) + "-01");
+    dt = "" + dt;
+    let daystr = dt.substr(0, 3);
+
+    setFirstday(days.indexOf(daystr));
+    // setFirstday((firstday + numdays) % 7);
+    //*********** */
+    k = 0;
+    if (month + 1 > 11) incrementYear();
     setNumdays(months[(month + 1) % 12].numdays);
+    if (year % 4 == 0 && months[(month + 1) % 12].numdays == 28) setNumdays(29);
   };
   const decrementMonth = () => {
-    let n_numdays = months[month - 1 < 0 ? 11 : month - 1].numdays;
-    let n_firstday = firstday - (n_numdays % 7);
-    if (n_firstday < 0) n_firstday = 7 + n_firstday;
-    setFirstday(n_firstday);
+    setMonth(month - 1 < 0 ? 11 : month - 1);
+    setNumdays(months[month - 1 < 0 ? 11 : month - 1].numdays);
+    if (year % 4 == 0 && months[month - 1 < 0 ? 11 : month - 1].numdays == 28)
+      setNumdays(29);
+
+    let dt = new Date(
+      year + "-" + (((month - 1 < 0 ? 11 : month - 1) + 1) % 12) + "-01"
+    );
+    dt = "" + dt;
+    let daystr = dt.substr(0, 3);
+    setFirstday(days.indexOf(daystr));
     k = 0;
     if ((month - 1 < 0 ? 11 : month - 1) == 11) decrementYear();
-    setMonth(month - 1 < 0 ? 11 : month - 1);
-    setNumdays(n_numdays);
+    // let n_numdays = months[month - 1 < 0 ? 11 : month - 1].numdays;
+    // let n_firstday = firstday - (n_numdays % 7);
+    // if (n_firstday < 0) n_firstday = 7 + n_firstday;
+    // setFirstday(n_firstday);
+    // k = 0;
+    // if ((month - 1 < 0 ? 11 : month - 1) == 11) decrementYear();
+    // setNumdays(n_numdays);
+  };
+  const getDay = () => {
+    let dt = new Date(year + "-" + (month + 1) + "-01");
+    dt = "" + dt;
+
+    let daystr = dt.substr(0, 3);
+    setFirstday(days.indexOf(daystr));
+    setNumdays(months[month].numdays);
+    if (year % 4 == 0 && months[month].numdays == 28) setNumdays(29);
   };
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
-    { month: "January", numdays: 31 },
-    { month: "February", numdays: 28 },
-    { month: "March", numdays: 31 },
-    { month: "April", numdays: 30 },
-    { month: "May", numdays: 31 },
-    { month: "June", numdays: 30 },
-    { month: "July", numdays: 31 },
-    { month: "August", numdays: 31 },
-    { month: "September", numdays: 30 },
-    { month: "October", numdays: 31 },
-    { month: "November", numdays: 30 },
-    { month: "December", numdays: 31 },
+    { monthshort: "Jan", month: "January", numdays: 31 },
+    { monthshort: "Feb", month: "February", numdays: 28 },
+    { monthshort: "Mar", month: "March", numdays: 31 },
+    { monthshort: "Apr", month: "April", numdays: 30 },
+    { monthshort: "May", month: "May", numdays: 31 },
+    { monthshort: "Jun", month: "June", numdays: 30 },
+    { monthshort: "Jul", month: "July", numdays: 31 },
+    { monthshort: "Aug", month: "August", numdays: 31 },
+    { monthshort: "Sep", month: "September", numdays: 30 },
+    { monthshort: "Oct", month: "October", numdays: 31 },
+    { monthshort: "Nov", month: "November", numdays: 30 },
+    { monthshort: "Dec", month: "December", numdays: 31 },
   ];
   return (
     <div className="calender">
+      <SimpleModal
+        modalOpen={modalOpen}
+        bodyList={modalBodyList}
+        setModalOpen={setModalOpen}
+        dateToModal={dateToModal}
+        storeToDB={storeToDB}
+      />
       <div className="calender__year">
         <button className="calender__button" onClick={decrementYear}>
           {"<<"}
