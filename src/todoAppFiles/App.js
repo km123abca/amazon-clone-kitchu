@@ -59,10 +59,14 @@ function App() {
           <Route path="/">
             <div className="app__contents">
               <h1>
-                Kitchu says check out{" "}
+                Kitchu says check out the{" "}
                 <Link to="/xpen" class="App__linktoother">
-                  {" "}
+                  {"  "}
                   otherApp
+                </Link>
+                <Link to="/calender" class="App__linktoother">
+                  {" or the "}
+                  calender
                 </Link>
               </h1>
             </div>

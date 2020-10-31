@@ -3,6 +3,7 @@ import "./Calender.css";
 import db from "./firebase";
 import firebase from "firebase";
 import SimpleModal from "./SimpleModal";
+import { Link } from "react-router-dom";
 
 function Calender() {
   let k = 0,
@@ -96,7 +97,7 @@ function Calender() {
     updateMonth(year - 1);
   };
   const updateMonth = (year) => {
-    let dt = new Date(year + "-" + ((month + 1) % 12) + "-01");
+    let dt = new Date(year + "-" + mod12(month + 1) + "-01");
     dt = "" + dt;
     let daystr = dt.substr(0, 3);
     setFirstday(days.indexOf(daystr));
@@ -104,43 +105,42 @@ function Calender() {
     setNumdays(months[month % 12].numdays);
     if (year % 4 == 0 && months[month % 12].numdays == 28) setNumdays(29);
   };
+  const mod12 = (x) => {
+    if (x < 10) return "0" + x;
+    if (x < 13) return x;
+    return x - 12;
+  };
   const incrementMonth = () => {
-    setMonth((month + 1) % 12);
-    //********* */
-    let dt = new Date(year + "-" + ((month + 2) % 12) + "-01");
-    dt = "" + dt;
-    let daystr = dt.substr(0, 3);
-
-    setFirstday(days.indexOf(daystr));
-    // setFirstday((firstday + numdays) % 7);
-    //*********** */
+    let newMonth = month + 1;
+    let newYear = year;
+    if (newMonth > 11) newYear += 1;
+    newMonth %= 12;
+    let new_dt = new Date(newYear + "-" + mod12(newMonth + 1) + "-01");
+    new_dt += "";
+    let fday = new_dt.substr(0, 3);
+    setFirstday(days.indexOf(fday));
     k = 0;
-    if (month + 1 > 11) incrementYear();
-    setNumdays(months[(month + 1) % 12].numdays);
-    if (year % 4 == 0 && months[(month + 1) % 12].numdays == 28) setNumdays(29);
+    setNumdays(months[newMonth].numdays);
+    if (newYear % 4 == 0 && months[newMonth].numdays == 28) setNumdays(29);
+    setMonth(newMonth);
+    setYear(newYear);
   };
   const decrementMonth = () => {
-    setMonth(month - 1 < 0 ? 11 : month - 1);
-    setNumdays(months[month - 1 < 0 ? 11 : month - 1].numdays);
-    if (year % 4 == 0 && months[month - 1 < 0 ? 11 : month - 1].numdays == 28)
-      setNumdays(29);
-
-    let dt = new Date(
-      year + "-" + (((month - 1 < 0 ? 11 : month - 1) + 1) % 12) + "-01"
-    );
-    dt = "" + dt;
-    let daystr = dt.substr(0, 3);
-    setFirstday(days.indexOf(daystr));
+    let newMonth = month - 1;
+    let newYear = year;
+    if (newMonth < 0) newYear -= 1;
+    newMonth = newMonth < 0 ? 11 : newMonth;
+    let new_dt = new Date(newYear + "-" + mod12(newMonth + 1) + "-01");
+    new_dt += "";
+    let fday = new_dt.substr(0, 3);
+    setFirstday(days.indexOf(fday));
     k = 0;
-    if ((month - 1 < 0 ? 11 : month - 1) == 11) decrementYear();
-    // let n_numdays = months[month - 1 < 0 ? 11 : month - 1].numdays;
-    // let n_firstday = firstday - (n_numdays % 7);
-    // if (n_firstday < 0) n_firstday = 7 + n_firstday;
-    // setFirstday(n_firstday);
-    // k = 0;
-    // if ((month - 1 < 0 ? 11 : month - 1) == 11) decrementYear();
-    // setNumdays(n_numdays);
+    setNumdays(months[newMonth].numdays);
+    if (newYear % 4 == 0 && months[newMonth].numdays == 28) setNumdays(29);
+    setMonth(newMonth);
+    setYear(newYear);
   };
+  /*
   const getDay = () => {
     let dt = new Date(year + "-" + (month + 1) + "-01");
     dt = "" + dt;
@@ -149,7 +149,7 @@ function Calender() {
     setFirstday(days.indexOf(daystr));
     setNumdays(months[month].numdays);
     if (year % 4 == 0 && months[month].numdays == 28) setNumdays(29);
-  };
+  };*/
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
     { monthshort: "Jan", month: "January", numdays: 31 },
@@ -213,6 +213,11 @@ function Calender() {
                 ))}
             </div>
           ))}
+      </div>
+      <div class="D2d__linkdiv">
+        <Link to="/" className="D2d__linktoother">
+          Other App
+        </Link>
       </div>
     </div>
   );
