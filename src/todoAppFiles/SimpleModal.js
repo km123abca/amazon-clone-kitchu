@@ -29,7 +29,7 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: 400,
+    width: window.innerWidth < 488 ? window.innerWidth - 110 : 400,
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -96,23 +96,23 @@ export default function SimpleModal({
                     }}
                   />
                 </Button>
-                <Button
+                {/* <Button
                   onClick={(e) => {
                     if (updateMode) {
-                      console.log(`${diaryupdateentry} will be saved`);
+                      // console.log(`${diaryupdateentry} will be saved`);
                       db.collection("calender")
                         .doc(x.id)
                         .set({ entry: diaryupdateentry }, { merge: true });
                       setDiaryupdateentry("");
                     } else {
-                      console.log("value:" + x.entry);
+                      // console.log("value:" + x.entry);
                       setDiaryupdateentry(x.entry);
                     }
                     setUpdateMode(!updateMode);
                   }}
                 >
                   <GavelIcon />
-                </Button>
+                </Button> */}
               </li>
             ))}
           </ul>

@@ -36,10 +36,12 @@ function D2d() {
   const [price, setPrice] = useState("");
   const [remarks, setRemarks] = useState("");
   const [showmode, setShowmode] = useState("all");
+  // const [selectedActivity, setSelectedActivity] = useState("None");
   //options are all,datewise,monthwise,yearwise itemwise
   useEffect(() => {
     db.collection("d2d")
-      .orderBy("timestamp", "asc")
+      // .orderBy("timestamp", "asc")
+      .orderBy("date", "desc")
       .onSnapshot((snapshot) => {
         setActivities(
           snapshot.docs.map((doc) => ({
@@ -131,7 +133,11 @@ function D2d() {
         </Link>
       </div>
       <RadioButtonPanel setShowmode={setShowmode} />
-      <ListOfActivities activities={activities} showmode={showmode} />
+      <ListOfActivities
+        activities={activities}
+        showmode={showmode}
+        // selectedActivity={selectedActivity}
+      />
       {/* <EnhancedTable /> */}
     </div>
   );

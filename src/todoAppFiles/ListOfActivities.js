@@ -51,6 +51,9 @@ function ListOfActivities(props) {
     case "itemwise":
       activities = groupOnItem(activities);
       break;
+    // case "selectedActivityWise":
+    //   activities = groupOnSelectedActivity(activities, props.selectedActivity);
+    //   break;
   }
   let allLabels = {
     all: ["Date", "Item", "Price (in Rs)", "Remarks"],

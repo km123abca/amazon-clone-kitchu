@@ -11,8 +11,10 @@ function Calender() {
   const [firstday, setFirstday] = useState(4);
   const [lastday, setLastday] = useState(6);
   const [numdays, setNumdays] = useState(31);
-  const [month, setMonth] = useState(9);
-  const [year, setYear] = useState(2020);
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [year, setYear] = useState(
+    parseInt("20" + (new Date().getYear() + "").substr(1, 2))
+  );
   const [dateToModal, setDateToModal] = useState("");
   const [entries, setEntries] = useState([]);
   const [modalBodyList, setModalBodyList] = useState([]);
@@ -27,6 +29,7 @@ function Calender() {
     });
   };
   useEffect(() => {
+    setDateOnLoad();
     db.collection("calender")
       .orderBy("timestamp", "asc")
       .onSnapshot((snapshot) => {
@@ -89,12 +92,12 @@ function Calender() {
     setLastday(firstday + numdays - 1);
   };
   const incrementYear = () => {
-    setYear(year + 1);
-    updateMonth(year + 1);
+    setYear(parseInt(year) + 1);
+    updateMonth(parseInt(year) + 1);
   };
   const decrementYear = () => {
-    setYear(year - 1);
-    updateMonth(year - 1);
+    setYear(parseInt(year) - 1);
+    updateMonth(parseInt(year) - 1);
   };
   const updateMonth = (year) => {
     let dt = new Date(year + "-" + mod12(month + 1) + "-01");
@@ -120,6 +123,25 @@ function Calender() {
     let fday = new_dt.substr(0, 3);
     setFirstday(days.indexOf(fday));
     k = 0;
+    setNumdays(months[newMonth].numdays);
+    if (newYear % 4 == 0 && months[newMonth].numdays == 28) setNumdays(29);
+    setMonth(newMonth);
+    setYear(newYear);
+  };
+  const setDateOnLoad = () => {
+    let new_dt = new Date();
+    new_dt += "";
+    k = 0;
+    let newMonth = new_dt.substr(4, 3);
+    newMonth = months.reduce(
+      (s, x) => (x.monthshort == newMonth ? (s = x.index) : s),
+      -1
+    );
+    let newYear = new_dt.substr(11, 4);
+    new_dt = new Date(newYear + "-" + mod12(newMonth + 1) + "-01");
+    new_dt += "";
+    let fday = new_dt.substr(0, 3);
+    setFirstday(days.indexOf(fday));
     setNumdays(months[newMonth].numdays);
     if (newYear % 4 == 0 && months[newMonth].numdays == 28) setNumdays(29);
     setMonth(newMonth);
@@ -152,18 +174,18 @@ function Calender() {
   };*/
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const months = [
-    { monthshort: "Jan", month: "January", numdays: 31 },
-    { monthshort: "Feb", month: "February", numdays: 28 },
-    { monthshort: "Mar", month: "March", numdays: 31 },
-    { monthshort: "Apr", month: "April", numdays: 30 },
-    { monthshort: "May", month: "May", numdays: 31 },
-    { monthshort: "Jun", month: "June", numdays: 30 },
-    { monthshort: "Jul", month: "July", numdays: 31 },
-    { monthshort: "Aug", month: "August", numdays: 31 },
-    { monthshort: "Sep", month: "September", numdays: 30 },
-    { monthshort: "Oct", month: "October", numdays: 31 },
-    { monthshort: "Nov", month: "November", numdays: 30 },
-    { monthshort: "Dec", month: "December", numdays: 31 },
+    { monthshort: "Jan", month: "January", numdays: 31, index: 0 },
+    { monthshort: "Feb", month: "February", numdays: 28, index: 1 },
+    { monthshort: "Mar", month: "March", numdays: 31, index: 2 },
+    { monthshort: "Apr", month: "April", numdays: 30, index: 3 },
+    { monthshort: "May", month: "May", numdays: 31, index: 4 },
+    { monthshort: "Jun", month: "June", numdays: 30, index: 5 },
+    { monthshort: "Jul", month: "July", numdays: 31, index: 6 },
+    { monthshort: "Aug", month: "August", numdays: 31, index: 7 },
+    { monthshort: "Sep", month: "September", numdays: 30, index: 8 },
+    { monthshort: "Oct", month: "October", numdays: 31, index: 9 },
+    { monthshort: "Nov", month: "November", numdays: 30, index: 10 },
+    { monthshort: "Dec", month: "December", numdays: 31, index: 11 },
   ];
   return (
     <div className="calender">

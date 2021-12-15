@@ -22,8 +22,9 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
-    width: "30%",
-    marginLeft: "40%",
+    // width: window.innerWidth < 488 ? "100%" : "30%",
+    width: "100%",
+    // marginLeft: "40%",
     backgroundColor: theme.palette.background.paper,
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
@@ -94,6 +95,8 @@ function Todo(props) {
           />
         )}
 
+        <Button onClick={strikeUnstrike}>{struck}</Button>
+        <Button onClick={(e) => setOpen(true)}>Edit</Button>
         <Button
           onClick={(event) =>
             db.collection("todos").doc(props.todo.id).delete()
@@ -101,8 +104,6 @@ function Todo(props) {
         >
           <DeleteIcon />
         </Button>
-        <Button onClick={strikeUnstrike}>{struck}</Button>
-        <Button onClick={(e) => setOpen(true)}>Edit</Button>
       </ListItem>
     </>
   );
