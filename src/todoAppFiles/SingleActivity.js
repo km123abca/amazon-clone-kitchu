@@ -44,31 +44,32 @@ function SingleActivity(props) {
   };
   let bodyTitles = allVals[props.showmode];
   return (
-    <StyledTableRow key={props.activity.id}>
-      {bodyTitles.map((btitle, index) =>
-        index == 0 ? (
-          <TableCell component="th" scope="row" key={index}>
-            {btitle}
-          </TableCell>
-        ) : index != 3 ? (
-          <TableCell align="right" key={index}>
-            {" "}
-            {btitle}
-          </TableCell>
-        ) : (
-          <TableCell align="right" key={index}>
-            {btitle}
-            <Button
-              onClick={(event) =>
-                db.collection("d2d").doc(props.activity.id).delete()
-              }
-            >
-              <DeleteIcon />
-            </Button>
-          </TableCell>
-        )
-      )}
-      {/* <TableCell component="th" scope="row">
+    <>
+      <StyledTableRow key={props.activity.id}>
+        {bodyTitles.map((btitle, index) =>
+          index == 0 ? (
+            <TableCell component="th" scope="row" key={index}>
+              {btitle}
+            </TableCell>
+          ) : index != 3 ? (
+            <TableCell align="right" key={index}>
+              {" "}
+              {btitle}
+            </TableCell>
+          ) : (
+            <TableCell align="right" key={index}>
+              {btitle}
+              <Button
+                onClick={(event) =>
+                  db.collection("d2d").doc(props.activity.id).delete()
+                }
+              >
+                <DeleteIcon />
+              </Button>
+            </TableCell>
+          )
+        )}
+        {/* <TableCell component="th" scope="row">
         {props.activity.date.split("-").reverse().join("-")}
       </TableCell>
       <TableCell align="right">{props.activity.xpen}</TableCell>
@@ -83,7 +84,8 @@ function SingleActivity(props) {
           <DeleteIcon />
         </Button>
       </TableCell> */}
-    </StyledTableRow>
+      </StyledTableRow>
+    </>
   );
 }
 

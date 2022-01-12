@@ -34,7 +34,12 @@ function ListOfActivities(props) {
   const [sw, sSw] = useState(650);
 
   const classes = useStyles();
+  const processShowMode = () => {
+    if (props.showmode == "custom") return "all";
+    return props.showmode;
+  };
 
+  let localShowMode = processShowMode();
   let activities = props.activities;
   switch (props.showmode) {
     case "all":
@@ -51,18 +56,23 @@ function ListOfActivities(props) {
     case "itemwise":
       activities = groupOnItem(activities);
       break;
+    default:
+      break;
     // case "selectedActivityWise":
     //   activities = groupOnSelectedActivity(activities, props.selectedActivity);
     //   break;
   }
   let allLabels = {
     all: ["Date", "Item", "Price (in Rs)", "Remarks"],
+    custom: ["Date", "Item", "Price (in Rs)", "Remarks"],
     datewise: ["Date", "Expenditure (in Rs)"],
     monthwise: ["Month", "Expenditure (in Rs)"],
     yearwise: ["Year", "Expenditure (in Rs)"],
     itemwise: ["Item", "Expenditure (in Rs)"],
   };
   let headerTitles = allLabels[props.showmode];
+  // return <h1> {localShowMode}</h1>;
+  //Original Return Block starts
   return (
     <TableContainer component={Paper} className="ListOfActivities">
       <Table className={classes.table} aria-label="simple table">
@@ -88,13 +98,15 @@ function ListOfActivities(props) {
             <SingleActivity
               activity={activity}
               key={activity.id}
-              showmode={props.showmode}
+              showmode={localShowMode}
             />
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
+
+  //Original Return Block ends
 }
 
 export default ListOfActivities;

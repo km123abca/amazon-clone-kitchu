@@ -10,6 +10,7 @@ function RadioButtonPanel(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    console.log(event.target.value);
     props.setShowmode(event.target.value);
   };
   return (
@@ -43,6 +44,7 @@ function RadioButtonPanel(props) {
           control={<Radio />}
           label="Itemwise"
         />
+        <FormControlLabel value="custom" control={<Radio />} label="Custom" />
       </RadioGroup>
     </FormControl>
   );

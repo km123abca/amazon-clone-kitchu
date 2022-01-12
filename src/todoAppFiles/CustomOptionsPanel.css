@@ -1,0 +1,10 @@
+.COP__main {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 90%;
+  margin: auto;
+}
+.COP__itemcontainer {
+  min-width: 200px;
+}

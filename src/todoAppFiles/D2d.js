@@ -15,6 +15,7 @@ import ListOfActivities from "./ListOfActivities";
 import EnhancedTable from "./EnhancedTable";
 import RadioButtonPanel from "./RadioButtonPanel";
 import { Link } from "react-router-dom";
+import CustomOptionsPanel from "./CustomOptionsPanel";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -133,6 +134,9 @@ function D2d() {
         </Link>
       </div>
       <RadioButtonPanel setShowmode={setShowmode} />
+
+      {/* {showmode == "custom" ? <CustomOptionsPanel /> : null} */}
+
       <ListOfActivities
         activities={activities}
         showmode={showmode}
